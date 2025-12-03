@@ -1,5 +1,10 @@
 # Release Notes for Unzer Payment Plugin for OXID eShop 6
 
+## [1.0.1]
+
+- iDEAL Payment Logo Update
+
+
 ## [1.0.0]
 
 We are excited to announce the release of the new Unzer Payment plugin for OXID eShop 6.
