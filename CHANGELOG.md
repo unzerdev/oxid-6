@@ -1,9 +1,12 @@
 # Release Notes for Unzer Payment Plugin for OXID eShop 6
 
+## [1.0.2]
+
+- Optimization saving settings in backend
+
 ## [1.0.1]
 
 - iDEAL Payment Logo Update
-
 
 ## [1.0.0]
 
