@@ -40,6 +40,14 @@
                 }, 5000);
             }
 
+            const checkboxWrapper = document.getElementById('unzer_payment_set_method_status_checkbox_p');
+            const targetSubmit = document.querySelector('input.confinput[name="save"]');
+
+            if (checkboxWrapper && targetSubmit && targetSubmit.parentNode) {
+                targetSubmit.parentNode.insertBefore(checkboxWrapper, targetSubmit);
+                checkboxWrapper.style.display = 'block';
+            }
+
             [{if !$unzer_has_clicktopay}]
             const ctp_input = document.querySelector('input[name="confbools[UnzerPaymentClickToPay]"]');
             if (ctp_input) {
@@ -51,6 +59,10 @@
             [{/if}]
         });
     </script>
+
+    <p id="unzer_payment_set_method_status_checkbox_p" style="display: none">
+        <input type="checkbox" value="1" name="unzer_payment_set_method_status"> Update payment methods as configured for your key pair
+    </p>
 
 [{/if}]
 
