@@ -233,6 +233,9 @@ class UnzerpaymentHelper
      */
     public function getPaymentMethodChargeMode($paymentMethod)
     {
+        if ($paymentMethod::UNZER_LONG_CODE == 'wero') {
+            return 'charge';
+        }
         $configKey = 'UnzerPayment' . ucfirst($paymentMethod::UNZER_LONG_CODE) . 'ChargeMode';
         $moduleSettingService = ContainerFactory::getInstance()
             ->getContainer()
