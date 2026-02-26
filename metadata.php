@@ -16,15 +16,17 @@ $aModule = [
     ],
     'thumbnail' => 'assets/admin/unzer_payment.png',
     'lang' => 'en',
-    'version' => '1.0.3',
+    'version' => '1.0.4',
     'author' => 'Unzer GmbH',
     'email' => 'info@unzer.com',
     'url' => 'https://www.unzer.com/',
     'extend' => [
         \OxidEsales\Eshop\Application\Model\PaymentGateway::class => \Unzer\UnzerPayment\Model\PaymentGateway::class,
         \OxidEsales\Eshop\Application\Model\Payment::class => \Unzer\UnzerPayment\Model\Payment::class,
+        \OxidEsales\Eshop\Application\Model\Order::class => \Unzer\UnzerPayment\Model\Order::class,
         \OxidEsales\Eshop\Core\ViewConfig::class => \Unzer\UnzerPayment\Core\ViewConfig::class,
         \OxidEsales\Eshop\Application\Controller\Admin\ModuleConfiguration::class => \Unzer\UnzerPayment\Controller\Admin\ModuleConfiguration::class,
+        \OxidEsales\Eshop\Application\Controller\Admin\OrderList::class => \Unzer\UnzerPayment\Controller\Admin\OrderList::class,
         \OxidEsales\Eshop\Application\Controller\OrderController::class => \Unzer\UnzerPayment\Controller\OrderController::class,
         \OxidEsales\Eshop\Application\Controller\PaymentController::class => \Unzer\UnzerPayment\Controller\PaymentController::class,
         \OxidEsales\Eshop\Application\Controller\ThankYouController::class => \Unzer\UnzerPayment\Controller\ThankYouController::class,
@@ -48,6 +50,16 @@ $aModule = [
             'template' => 'module_config.tpl',
             'block' => 'admin_module_config_form',
             'file' => 'views/admin/blocks/admin_module_config_form.tpl'
+        ],
+        [
+            'template' => 'order_list.tpl',
+            'block' => 'admin_order_list_item',
+            'file' => 'views/admin/blocks/admin_order_list_item.tpl'
+        ],
+        [
+            'template' => 'order_overview.tpl',
+            'block' => 'admin_order_overview_order_number',
+            'file' => 'views/admin/blocks/admin_order_overview_order_number.tpl'
         ],
         [
             'template' => 'payment_main.tpl',

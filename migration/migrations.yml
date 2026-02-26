@@ -1,0 +1,4 @@
+name: Unzer Payment Migrations OXID6
+migrations_namespace: Unzer\UnzerPayment\Migrations
+table_name: oxmigrations_unzerpayment
+migrations_directory: data
