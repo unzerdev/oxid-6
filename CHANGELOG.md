@@ -1,5 +1,9 @@
 # Release Notes for Unzer Payment Plugin for OXID eShop 6
 
+## [1.0.5]
+- Updated iDEAL Payment naming and logo
+- Fix for direct debit paypage creation
+
 ## [1.0.4]
 
 - Added Unzer Order ID to enable cross platform search
