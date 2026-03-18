@@ -66,5 +66,61 @@ $aLang = [
     'UNZER_BIC' => 'BIC',
     'UNZER_PLEASE_USE_DESCRIPTOR' => 'Please use only this identification number as the descriptor',
 
+    'SHOP_MODULE_GROUP_unzer_payment_design' => 'Design customization',
+
+    'SHOP_MODULE_sUnzerPaymentDesignShopName' => 'Shop name',
+    'HELP_SHOP_MODULE_sUnzerPaymentDesignShopName' => 'Will be passed to Unzer as shopName.',
+
+    'SHOP_MODULE_sUnzerPaymentDesignBasketBackgroundColor' => 'Basket background color',
+    'HELP_SHOP_MODULE_sUnzerPaymentDesignBasketBackgroundColor' => 'HEX color value, e.g. #a39193',
+
+    'SHOP_MODULE_sUnzerPaymentDesignPaymentFormBackgroundColor' => 'Payment form background color',
+    'HELP_SHOP_MODULE_sUnzerPaymentDesignPaymentFormBackgroundColor' => 'HEX color value, e.g. #cebfb6',
+
+    'SHOP_MODULE_sUnzerPaymentDesignFont' => 'Font',
+    'HELP_SHOP_MODULE_sUnzerPaymentDesignFont' => 'CSS font-family, e.g. Inter, Arial, sans-serif',
+
+    'SHOP_MODULE_sUnzerPaymentDesignBrandColor' => 'Brand color',
+    'HELP_SHOP_MODULE_sUnzerPaymentDesignBrandColor' => 'HEX color value, e.g. #000000',
+
+    'SHOP_MODULE_blUnzerPaymentDesignShadows' => 'Enable shadows',
+    'HELP_SHOP_MODULE_blUnzerPaymentDesignShadows' => 'Enables shadows on the payment page.',
+
+    'SHOP_MODULE_sUnzerPaymentDesignTextColor' => 'Text color',
+    'HELP_SHOP_MODULE_sUnzerPaymentDesignTextColor' => 'HEX color value, e.g. #0C1332',
+
+    'SHOP_MODULE_sUnzerPaymentDesignLinkColor' => 'Link color',
+    'HELP_SHOP_MODULE_sUnzerPaymentDesignLinkColor' => 'HEX color value, e.g. #1B6AD7',
+
+    'SHOP_MODULE_sUnzerPaymentDesignCornerRadius' => 'Corner radius',
+    'HELP_SHOP_MODULE_sUnzerPaymentDesignCornerRadius' => 'Numeric value, e.g. 6',
+
+    'SHOP_MODULE_blUnzerPaymentDesignHideUnzerLogo' => 'Hide Unzer logo',
+    'HELP_SHOP_MODULE_blUnzerPaymentDesignHideUnzerLogo' => 'Hides the Unzer logo on the payment page.',
+
+    'SHOP_MODULE_sUnzerPaymentDesignLogoImage' => 'Logo image URL',
+    'HELP_SHOP_MODULE_sUnzerPaymentDesignLogoImage' => 'Absolute URL to the logo image.',
+
+    'SHOP_MODULE_sUnzerPaymentDesignFooterColor' => 'Footer color',
+    'HELP_SHOP_MODULE_sUnzerPaymentDesignFooterColor' => 'HEX color value for the footer.',
+
+    'SHOP_MODULE_sUnzerPaymentDesignHeaderColor' => 'Header color',
+    'HELP_SHOP_MODULE_sUnzerPaymentDesignHeaderColor' => 'HEX color value, e.g. #FFFFFF',
+
+    'SHOP_MODULE_blUnzerPaymentDesignHideBasket' => 'Hide basket',
+    'HELP_SHOP_MODULE_blUnzerPaymentDesignHideBasket' => 'Hides the basket on the payment page.',
+
+    'SHOP_MODULE_sUnzerPaymentDesignFont_' => '',
+    'SHOP_MODULE_sUnzerPaymentDesignFont_Arial' => 'Arial',
+    'SHOP_MODULE_sUnzerPaymentDesignFont_Verdana' => 'Verdana',
+    'SHOP_MODULE_sUnzerPaymentDesignFont_Tahoma' => 'Tahoma',
+    'SHOP_MODULE_sUnzerPaymentDesignFont_Trebuchet MS' => 'Trebuchet MS',
+    'SHOP_MODULE_sUnzerPaymentDesignFont_Times New Roman' => 'Times New Roman',
+    'SHOP_MODULE_sUnzerPaymentDesignFont_Georgia' => 'Georgia',
+    'SHOP_MODULE_sUnzerPaymentDesignFont_Garamond' => 'Garamond',
+    'SHOP_MODULE_sUnzerPaymentDesignFont_Courier New' => 'Courier New',
+    'SHOP_MODULE_sUnzerPaymentDesignFont_UnzerVisuelt' => 'UnzerVisuelt',
+    'SHOP_MODULE_sUnzerPaymentDesignFont_Inter' => 'Inter',
+    'SHOP_MODULE_sUnzerPaymentDesignFont_SFMono' => 'SFMono',
 ];
 

@@ -16,7 +16,7 @@ $aModule = [
     ],
     'thumbnail' => 'assets/admin/unzer_payment.png',
     'lang' => 'en',
-    'version' => '1.0.5',
+    'version' => '1.0.6',
     'author' => 'Unzer GmbH',
     'email' => 'info@unzer.com',
     'url' => 'https://www.unzer.com/',
@@ -34,6 +34,7 @@ $aModule = [
     'controllers' => [
         'unzer_payment_webhook' => \Unzer\UnzerPayment\Controller\WebhookController::class,
         'unzer_payment_admin_order'   => \Unzer\UnzerPayment\Controller\Admin\AdminOrderController::class,
+        'unzer_payment_admin_preview' => \Unzer\UnzerPayment\Controller\Admin\AdminPreviewController::class,
     ],
     'events' => [
         'onActivate' => \Unzer\UnzerPayment\Core\Events::class . '::onActivate',
@@ -50,6 +51,11 @@ $aModule = [
             'template' => 'module_config.tpl',
             'block' => 'admin_module_config_form',
             'file' => 'views/admin/blocks/admin_module_config_form.tpl'
+        ],
+        [
+            'template' => 'module_config.tpl',
+            'block'    => 'admin_module_config_var_type_str',
+            'file'     => '/views/admin/blocks/admin_module_config_var_type_str.tpl'
         ],
         [
             'template' => 'order_list.tpl',
@@ -161,6 +167,106 @@ $aModule = [
             'name' => 'UnzerPaymentClickToPay',
             'type' => 'bool',
             'value' => false
-        ]
+        ],
+        [
+            'group' => 'unzer_payment_design',
+            'name' => 'sUnzerPaymentDesignShopName',
+            'type' => 'str',
+            'value' => '',
+            'position' => 10,
+        ],
+        [
+            'group' => 'unzer_payment_design',
+            'name' => 'sUnzerPaymentDesignFont',
+            'type' => 'select',
+            'value' => '|Arial|Verdana|Tahoma|Trebuchet MS|Times New Roman|Georgia|Garamond|Courier New|UnzerVisuelt|Inter|SFMono',
+            'constraints' => '|Arial|Verdana|Tahoma|Trebuchet MS|Times New Roman|Georgia|Garamond|Courier New|UnzerVisuelt|Inter|SFMono',
+            'position' => 40,
+        ],
+        [
+            'group' => 'unzer_payment_design',
+            'name' => 'sUnzerPaymentDesignHeaderColor',
+            'type' => 'str',
+            'value' => '#FFFFFF',
+            'position' => 150,
+        ],
+        [
+            'group' => 'unzer_payment_design',
+            'name' => 'sUnzerPaymentDesignFooterColor',
+            'type' => 'str',
+            'value' => '',
+            'position' => 140,
+        ],
+        [
+            'group' => 'unzer_payment_design',
+            'name' => 'sUnzerPaymentDesignBrandColor',
+            'type' => 'str',
+            'value' => '',
+            'position' => 50,
+        ],
+        [
+            'group' => 'unzer_payment_design',
+            'name' => 'sUnzerPaymentDesignTextColor',
+            'type' => 'str',
+            'value' => '#0C1332',
+            'position' => 70,
+        ],
+        [
+            'group' => 'unzer_payment_design',
+            'name' => 'sUnzerPaymentDesignLinkColor',
+            'type' => 'str',
+            'value' => '#1B6AD7',
+            'position' => 80,
+        ],
+        [
+            'group' => 'unzer_payment_design',
+            'name' => 'sUnzerPaymentDesignCornerRadius',
+            'type' => 'str',
+            'value' => '6',
+            'position' => 100,
+        ],
+        [
+            'group' => 'unzer_payment_design',
+            'name' => 'sUnzerPaymentDesignLogoImage',
+            'type' => 'str',
+            'value' => '',
+            'position' => 120,
+        ],
+        [
+            'group' => 'unzer_payment_design',
+            'name' => 'blUnzerPaymentDesignShadows',
+            'type' => 'bool',
+            'value' => false,
+            'position' => 60,
+        ],
+        [
+            'group' => 'unzer_payment_design',
+            'name' => 'blUnzerPaymentDesignHideUnzerLogo',
+            'type' => 'bool',
+            'value' => false,
+            'position' => 110,
+        ],
+        [
+            'group' => 'unzer_payment_design',
+            'name' => 'blUnzerPaymentDesignHideBasket',
+            'type' => 'bool',
+            'value' => false,
+            'position' => 160,
+        ],
+        [
+            'group' => 'unzer_payment_design',
+            'name' => 'sUnzerPaymentDesignBasketBackgroundColor',
+            'type' => 'str',
+            'value' => '#a39193',
+            'position' => 20,
+        ],
+        [
+            'group' => 'unzer_payment_design',
+            'name' => 'sUnzerPaymentDesignPaymentFormBackgroundColor',
+            'type' => 'str',
+            'value' => '#cebfb6',
+            'position' => 30,
+        ],
+
     ],
 ];
