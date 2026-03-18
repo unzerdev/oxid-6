@@ -1,5 +1,8 @@
 # Release Notes for Unzer Payment Plugin for OXID eShop 6
 
+## [1.0.6]
+- Added Customization designer in backend module configuration
+
 ## [1.0.5]
 - Updated iDEAL Payment naming and logo
 - Fix for direct debit paypage creation

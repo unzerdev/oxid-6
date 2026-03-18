@@ -20,6 +20,7 @@ use Unzer\UnzerPayment\Traits\ServiceContainer;
 use Unzer\UnzerPayment\Traits\UnzerRedirect;
 use OxidEsales\EshopCommunity\Internal\Container\ContainerFactory;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Bridge\ModuleSettingBridgeInterface;
+use UnzerSDK\Resources\EmbeddedResources\Paypage\Style;
 
 /**
  * @inheritDoc
@@ -414,6 +415,42 @@ class OrderController extends OrderController_parent
                 ->setReturnPending($redirectUrl)
                 ->setReturnCancel($redirectUrl)
         );
+
+        $config = Registry::getConfig();
+        $style = new Style();
+        $setIfNotEmpty = static function ($value, callable $setter): void {
+            if ($value !== null && trim((string)$value) !== '') {
+                $setter(trim((string)$value));
+            }
+        };
+
+        $setIfNotEmpty($config->getConfigParam('sUnzerPaymentDesignBasketBackgroundColor'), [$style, 'setBasketBackgroundColor']);
+        $setIfNotEmpty($config->getConfigParam('sUnzerPaymentDesignPaymentFormBackgroundColor'), [$style, 'setPaymentFormBackgroundColor']);
+        $setIfNotEmpty($config->getConfigParam('sUnzerPaymentDesignFont'), [$style, 'setFont']);
+        $setIfNotEmpty($config->getConfigParam('sUnzerPaymentDesignBrandColor'), [$style, 'setBrandColor']);
+        $setIfNotEmpty($config->getConfigParam('sUnzerPaymentDesignTextColor'), [$style, 'setTextColor']);
+        $setIfNotEmpty($config->getConfigParam('sUnzerPaymentDesignLinkColor'), [$style, 'setLinkColor']);
+        $setIfNotEmpty($config->getConfigParam('sUnzerPaymentDesignLogoImage'), [$style, 'setLogoImage']);
+        $setIfNotEmpty($config->getConfigParam('sUnzerPaymentDesignFooterColor'), [$style, 'setFooterColor']);
+        $setIfNotEmpty($config->getConfigParam('sUnzerPaymentDesignHeaderColor'), [$style, 'setHeaderColor']);
+
+        $cornerRadius = $config->getConfigParam('sUnzerPaymentDesignCornerRadius');
+        if ($cornerRadius !== null && $cornerRadius !== '') {
+            $style->setCornerRadius((string)(int)$cornerRadius);
+        } else {
+            $style->setCornerRadius('1');
+        }
+
+        $style->setShadows((bool)$config->getConfigParam('blUnzerPaymentDesignShadows'));
+        $style->setHideUnzerLogo((bool)$config->getConfigParam('blUnzerPaymentDesignHideUnzerLogo'));
+        $style->setHideBasket((bool)$config->getConfigParam('blUnzerPaymentDesignHideBasket'));
+        $shopName = trim((string)$config->getConfigParam('sUnzerPaymentDesignShopName'));
+
+        if ($shopName !== '') {
+            $paypage->setShopName($shopName);
+        }
+
+        $paypage->setStyle($style);
 
         try {
             UnzerpaymentClient::getInstance()->createPaypage($paypage);
