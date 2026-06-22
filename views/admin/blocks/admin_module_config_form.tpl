@@ -238,26 +238,28 @@
                 </thead>
                 <tbody>
                 [{assign var="counter" value=0}]
-                [{foreach from=$unzer_webhooks item=webhook}]
-                    [{assign var="counter" value=$counter+1}]
-                    [{cycle values="listitem,listitem2" assign="zebra"}]
-                    <tr>
-                        <td class="[{$zebra}]">
-                            [{$webhook->getId()}]
-                        </td>
-                        <td class="[{$zebra}]">
-                            [{$webhook->getEvent()}]
-                        </td>
-                        <td class="[{$zebra}]">
-                            [{$webhook->getUrl()}]
-                        </td>
-                        <td class="[{$zebra}]">
-                            <a href="[{$oViewConf->getSelfLink()}]&oxid=[{$oModule->getInfo('id')}]&editval[oxshops__oxid]=[{$oxid}]&cl=module_config&fnc=deletewebhook&webhookId=[{$webhook->getId()}]"
-                               onclick="return confirm('[{oxmultilang ident="UNZER_WEBHOOK_DELETE_CONFIRM"}]')" class="delete">
-                            </a>
-                        </td>
-                    </tr>
-                    [{/foreach}]
+                [{if $unzer_webhooks neq false}]
+                    [{foreach from=$unzer_webhooks item=webhook}]
+                        [{assign var="counter" value=$counter+1}]
+                        [{cycle values="listitem,listitem2" assign="zebra"}]
+                        <tr>
+                            <td class="[{$zebra}]">
+                                [{$webhook->getId()}]
+                            </td>
+                            <td class="[{$zebra}]">
+                                [{$webhook->getEvent()}]
+                            </td>
+                            <td class="[{$zebra}]">
+                                [{$webhook->getUrl()}]
+                            </td>
+                            <td class="[{$zebra}]">
+                                <a href="[{$oViewConf->getSelfLink()}]&oxid=[{$oModule->getInfo('id')}]&editval[oxshops__oxid]=[{$oxid}]&cl=module_config&fnc=deletewebhook&webhookId=[{$webhook->getId()}]"
+                                   onclick="return confirm('[{oxmultilang ident="UNZER_WEBHOOK_DELETE_CONFIRM"}]')" class="delete">
+                                </a>
+                            </td>
+                        </tr>
+                        [{/foreach}]
+                [{/if}]
                 </tbody>
             </table>
 
