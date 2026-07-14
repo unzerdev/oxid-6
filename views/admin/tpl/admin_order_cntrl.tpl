@@ -219,7 +219,7 @@
                         <tr><th>[{oxmultilang ident="UNZER_CANCELLED_AMOUNT"}]</th><td>[{$unzer_transactions.cancelled}]</td></tr>
                         <tr><th>[{oxmultilang ident="UNZER_REMAINING_AMOUNT"}]</th><td>[{$unzer_transactions.remaining}]</td></tr>
 
-                        [{if !$unzerNoActionsBecauseError}]
+                        [{if !$unzerNoActionsBecauseError and !$unzerNoCapture and !$unzerNoCancel}]
                             [{if $unzer_transactions.remainingPlain && $unzer_transactions.paymentBaseMethod neq 'p24'}]
                                 <tr>
                                     <td colspan="2">
@@ -230,16 +230,20 @@
                                             <input type="hidden" name="cl" value="unzer_payment_admin_order">
                                             <input type="hidden" name="fnc" value="executeCapture">
                                             <input type="hidden" name="language" value="[{$actlang}]">
-                                            <input type="number" step="0.01" min="0.01" max="[{$unzer_transactions.remainingPlain}]" value="[{$unzer_transactions.remainingPlain}]" name="unzer_capture_amount" id="unzer-capture-amount-input" />
-                                            [{if $unzer_transactions.paymentBaseMethod neq 'ppy'}]
-                                                <button class="saveButton btn btn-primary btn-sm btn-capture" type="submit" name="unzer_action" value="unzer_capture">
-                                                    [{oxmultilang ident="UNZER_CAPTURE_AMOUNT"}]
-                                                </button>
+                                            [{if !$unzerNoCapture}]
+                                                [{if $unzer_transactions.paymentBaseMethod neq 'ppy'}]
+                                                    <input type="number" step="0.01" min="0.01" max="[{$unzer_transactions.remainingPlain}]" value="[{$unzer_transactions.remainingPlain}]" name="unzer_capture_amount" id="unzer-capture-amount-input" />
+                                                    <button class="saveButton btn btn-primary btn-sm btn-capture" type="submit" name="unzer_action" value="unzer_capture">
+                                                        [{oxmultilang ident="UNZER_CAPTURE_AMOUNT"}]
+                                                    </button>
+                                                [{/if}]
                                             [{/if}]
                                             [{if $unzer_transactions.canCancel && $unzer_transactions.paymentBaseMethod neq 'p24'}]
-                                                <button class="saveButton btn btn-primary btn-sm btn-cancel" type="button" id="unzer_cancel_payment_btn" name="unzer_cancel_payment" value="unzer_cancel_payment_action">
-                                                    [{oxmultilang ident="UNZER_CANCEL_ORDER"}]
-                                                </button>
+                                                [{if !$unzerNoCancel}]
+                                                    <button class="saveButton btn btn-primary btn-sm btn-cancel" type="button" id="unzer_cancel_payment_btn" name="unzer_cancel_payment" value="unzer_cancel_payment_action">
+                                                        [{oxmultilang ident="UNZER_CANCEL_ORDER"}]
+                                                    </button>
+                                                [{/if}]
                                             [{/if}]
                                         </form>
                                     </td>

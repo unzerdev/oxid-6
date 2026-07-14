@@ -1,5 +1,9 @@
 # Release Notes for Unzer Payment Plugin for OXID eShop 6
 
+## [1.0.8]
+
+- Updated Order Status Logic for Direct Bank Transfer
+
 ## [1.0.7]
 - Fixed an issue in the OXID webhook handler where incorrect shop scoping caused the wrong order ID to be resolved from a transaction ID, leading to orders not being completed or visible.
 
