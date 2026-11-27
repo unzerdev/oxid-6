@@ -3,6 +3,15 @@
 $sLangName = 'Deutsch';
 
 $aLang = [
+    'SHOP_MODULE_UnzerPaymentCOFCreditCard' => 'Daten für registrierte Kunden speichern (Kreditkarte)',
+    'SHOP_MODULE_UnzerPaymentCOFPaypal' => 'Daten für registrierte Kunden speichern (Paypal)',
+    'SHOP_MODULE_UnzerPaymentCOFDirectDebit' => 'Daten für registrierte Kunden speichern (Lastschrift)',
+    'SHOP_MODULE_blUnzerPreCreateOrder' => 'Bestellung vor Unzer-Zahlung anlegen (Webhook-Abschluss)',
+    'SHOP_MODULE_UnzerPaymentApplepayExpressCheckout' => 'Apple Pay Express Checkout aktivieren',
+    'SHOP_MODULE_UnzerPaymentGooglepayExpressCheckout' => 'Google Pay Express Checkout aktivieren',
+    'SHOP_MODULE_UnzerPaymentPaypalExpressCheckout' => 'Paypal Express Checkout aktivieren',
+    'SHOP_MODULE_UnzerPaymentGooglepayMerchantId' => 'Google Pay Merchant Id',
+    'SHOP_MODULE_UnzerPaymentGooglepayMerchantName' => 'Google Pay Merchant Name',
     'charset' => 'UTF-8',
 
     'SHOP_MODULE_GROUP_unzer_payment_main' => 'Basis Settings',

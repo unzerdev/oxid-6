@@ -128,13 +128,17 @@ class UnzerpaymentClient extends \UnzerSDK\Unzer {
         if (is_null($unzerClient)) {
             return [];
         }
-        $keypairResponse = $unzerClient->fetchKeypair(true);
-        $availablePaymentTypes = $keypairResponse->getAvailablePaymentTypes();
-        usort($availablePaymentTypes, function ($a, $b) { return strcmp(strtolower($a->type), strtolower($b->type)); });
-        foreach ($availablePaymentTypes as $availablePaymentTypeKey => &$availablePaymentType) {
-            if ($availablePaymentType->type == 'PIS' || $availablePaymentType->type == 'giropay') {
-                unset($availablePaymentTypes[$availablePaymentTypeKey]);
+        try {
+            $keypairResponse = $unzerClient->fetchKeypair(true);
+            $availablePaymentTypes = $keypairResponse->getAvailablePaymentTypes();
+            usort($availablePaymentTypes, function ($a, $b) { return strcmp(strtolower($a->type), strtolower($b->type)); });
+            foreach ($availablePaymentTypes as $availablePaymentTypeKey => &$availablePaymentType) {
+                if ($availablePaymentType->type == 'PIS' || $availablePaymentType->type == 'giropay') {
+                    unset($availablePaymentTypes[$availablePaymentTypeKey]);
+                }
             }
+        } catch (\Exception $e) {
+            return [];
         }
         return $availablePaymentTypes;
     }
@@ -146,10 +150,6 @@ class UnzerpaymentClient extends \UnzerSDK\Unzer {
     {
         try {
             $webhooks = $this->fetchAllWebhooks();
-            $logger = $this->getServiceFromContainer(DebugHandler::class);
-            $logger->addLog('webhook Fetch', 2, false, [
-                'webhooks' => $webhooks,
-            ]);
             if (sizeof($webhooks) > 0) {
                 return $webhooks;
             }

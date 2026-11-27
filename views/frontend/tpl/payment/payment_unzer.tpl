@@ -3,7 +3,7 @@
         <input id="payment_[{$sPaymentID}]" type="radio" name="paymentid" value="[{$sPaymentID}]" [{if $oView->getCheckedPaymentId() == $paymentmethod->oxpayments__oxid->value}]checked[{/if}]>
         <label for="payment_[{$sPaymentID}]"><b>
                 <img src="[{$paymentmethod->getIcon()}]" style="max-width: 40px; height: auto; vertical-align: middle">
-                [{$paymentmethod->oxpayments__oxdesc->value}]
+                [{assign var="expressTitle" value=$oViewConf->getUnzerExpressPaymentTitle($sPaymentID)}][{if $expressTitle}][{$expressTitle}][{else}][{$paymentmethod->oxpayments__oxdesc->value}][{/if}]
                 [{if $paymentmethod->getPrice()}]
                     [{assign var="oPaymentPrice" value=$paymentmethod->getPrice()}]
                     [{if $oPaymentPrice->getBruttoPrice() > 0}]

@@ -16,18 +16,15 @@
       "homepage": "https://www.unzer.com"
     }
   ],
-  "version": "1.0.8",
+  "version": "1.1.0",
   "license": "Apache-2.0",
   "extra": {
     "oxideshop": {
       "target-directory": "unzer/unzer_payment"
     }
   },
-  "conflicts": {
-    "oxid-esales/oxideshop-ce": ">6.5"
-  },
   "require": {
-    "php": ">=7.4 || <=8.1",
+    "php": ">=7.4",
     "lib-curl": ">=7.26.0",
     "lib-openssl": ">=1.0.1",
     "ext-curl": "*",
@@ -38,6 +35,12 @@
   "autoload": {
     "psr-4": {
       "Unzer\\UnzerPayment\\": "./src/"
-    }
+    },
+    "files": [
+      "compatibility.php"
+    ]
+  },
+  "conflict": {
+    "oxid-esales/oxideshop-ce": "<6.4 || >=6.6"
   }
 }

@@ -120,6 +120,11 @@ class Events
      */
     public static function addDatabaseStructure()
     {
+        \Unzer\UnzerPayment\Service\PreOrderMigration::migrate();
+        $db = \OxidEsales\Eshop\Core\DatabaseProvider::getMaster();
+        if (!$db->getOne("SHOW COLUMNS FROM oxorder LIKE 'OXUNZEREXPRESSMETHOD'")) {
+            $db->execute('ALTER TABLE oxorder ADD OXUNZEREXPRESSMETHOD TINYINT NOT NULL DEFAULT 0');
+        }
     }
 
     /**
