@@ -1,5 +1,5 @@
 [{assign var="payment" value=$oView->getPayment()}]
-[{if $payment->isUnzerPaymentMethod()}]
+[{if $payment->isUnzerPaymentMethod() && !$oViewConf->isExpressCheckout()}]
     [{include file="modules/unzer/unzer_payment/_inc/unzer_assets.tpl"}]
 
     <button type="button" class="btn btn-lg btn-primary pull-right submitButton nextStep largeButton" id="unzer-checkout-btn">

@@ -30,4 +30,9 @@ class AbstractUnzerPaymentMethod
     }
 
 
+
+    public function hasExpressCheckout()
+    {
+        return false;
+    }
 }

@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Unzer\UnzerPayment\Classes;
 
+use Unzer\UnzerPayment\Service\ExpressPaymentMethods;
+use OxidEsales\Eshop\Application\Model\PaymentList;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\EshopCommunity\Internal\Container\ContainerFactory;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Bridge\ModuleSettingBridgeInterface;
@@ -488,4 +490,63 @@ class UnzerpaymentHelper
 
 
 
+
+    public function getExpressCoUrl($method): string
+    {
+        return Registry::getConfig()->getCurrentShopUrl(false).'index.php?cl=unzer_payment_express&fnc=' . $method;
+    }
+
+    public static function isPaymentMethodAvailable(string $paymentId): bool
+    {
+        $basket = Registry::getSession()->getBasket();
+        if (!$basket || !$basket->getProductsCount()) {
+            return false;
+        }
+        $user = Registry::getSession()->getUser();
+        if (!$user || !$basket->getShippingId()) {
+            // A guest supplies the shipping country through the wallet.
+            // ExpressCheckoutStateService validates the resulting shipping/payment pair.
+            $payment = oxNew(\OxidEsales\Eshop\Application\Model\Payment::class);
+            return $payment->load($paymentId) && (bool) $payment->getFieldData('oxactive');
+        }
+        $basket->calculateBasket(true);
+        $paymentList = oxNew(PaymentList::class);
+        $payments = $paymentList->getPaymentList(
+            $basket->getShippingId(),
+            $basket->getPrice()->getBruttoPrice(),
+            $user
+        );
+
+        return isset($payments[$paymentId]);
+    }
+
+    public static function hasAtLeastOneActiveExpressCheckoutOption(): bool
+    {
+        foreach ([ExpressPaymentMethods::APPLE_PAY => 'Applepay', ExpressPaymentMethods::PAYPAL => 'Paypal', ExpressPaymentMethods::GOOGLE_PAY => 'Googlepay'] as $expressMethodPaymentId => $expressMethod) {
+
+            $class = '\\Unzer\\UnzerPayment\\PaymentMethods\\Unzer' . $expressMethod . 'PaymentMethod';
+            if (!class_exists($class)) {
+                continue;
+            }
+            $gateway = new $class;
+            if ($gateway->hasExpressCheckout() && self::isPaymentMethodAvailable($expressMethodPaymentId)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static function hasActiveExpressCheckoutOption($expressMethodPayment): bool
+    {
+        if (self::isPaymentMethodAvailable('up_' . strtolower($expressMethodPayment))) {
+            $class = '\\Unzer\\UnzerPayment\\PaymentMethods\\Unzer' . $expressMethodPayment . 'PaymentMethod';
+            if (class_exists($class)) {
+                $gateway = new $class;
+                if ($gateway->hasExpressCheckout()) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
 }

@@ -1,4 +1,5 @@
 <?php
+require_once __DIR__ . "/compatibility.php";
 /**
  * Metadata version
  */
@@ -16,11 +17,15 @@ $aModule = [
     ],
     'thumbnail' => 'assets/admin/unzer_payment.png',
     'lang' => 'en',
-    'version' => '1.0.8',
+    'version' => '1.1.0',
     'author' => 'Unzer GmbH',
     'email' => 'info@unzer.com',
     'url' => 'https://www.unzer.com/',
     'extend' => [
+        \OxidEsales\Eshop\Application\Controller\Admin\OrderOverview::class => \Unzer\UnzerPayment\Controller\Admin\OrderOverview::class,
+        \OxidEsales\Eshop\Application\Component\UserComponent::class => \Unzer\UnzerPayment\Component\UserComponent::class,
+        \OxidEsales\Eshop\Application\Model\OrderArticle::class => \Unzer\UnzerPayment\Model\OrderArticle::class,
+        \OxidEsales\Eshop\Application\Model\BasketReservation::class => \Unzer\UnzerPayment\Model\BasketReservation::class,
         \OxidEsales\Eshop\Application\Model\PaymentGateway::class => \Unzer\UnzerPayment\Model\PaymentGateway::class,
         \OxidEsales\Eshop\Application\Model\Payment::class => \Unzer\UnzerPayment\Model\Payment::class,
         \OxidEsales\Eshop\Application\Model\Order::class => \Unzer\UnzerPayment\Model\Order::class,
@@ -32,6 +37,8 @@ $aModule = [
         \OxidEsales\Eshop\Application\Controller\ThankYouController::class => \Unzer\UnzerPayment\Controller\ThankYouController::class,
     ],
     'controllers' => [
+        'unzer_payment_express' => \Unzer\UnzerPayment\Controller\ExpressController::class,
+        'unzer_payment_redirect' => \Unzer\UnzerPayment\Controller\RedirectController::class,
         'unzer_payment_webhook' => \Unzer\UnzerPayment\Controller\WebhookController::class,
         'unzer_payment_admin_order'   => \Unzer\UnzerPayment\Controller\Admin\AdminOrderController::class,
         'unzer_payment_admin_preview' => \Unzer\UnzerPayment\Controller\Admin\AdminPreviewController::class,
@@ -44,9 +51,16 @@ $aModule = [
         'admin_order_cntrl.tpl' => 'unzer/unzer_payment/views/admin/tpl/admin_order_cntrl.tpl',
         'modules/unzer/unzer_payment/payment/payment_unzer.tpl' => 'unzer/unzer_payment/views/frontend/tpl/payment/payment_unzer.tpl',
         'modules/unzer/unzer_payment/_inc/unzer_assets.tpl' => 'unzer/unzer_payment/views/frontend/_inc/unzer_assets.tpl',
+        'modules/unzer/unzer_payment/_inc/unzer_express.tpl' => 'unzer/unzer_payment/views/frontend/_inc/unzer_express.tpl',
         'modules/unzer/unzer_payment/_inc/transfer_data.tpl' => 'unzer/unzer_payment/views/frontend/_inc/transfer_data.tpl',
     ],
     'blocks' => [
+        ['template' => 'page/checkout/order.tpl', 'block' => 'checkout_order_address', 'file' => 'views/frontend/blocks/checkout_order_address.tpl'],
+        ['template' => 'page/checkout/payment.tpl', 'block' => 'checkout_payment_main', 'file' => 'views/frontend/blocks/checkout_payment_main.tpl'],
+        ['template' => 'widget/minibasket/minibasket.tpl', 'block' => 'widget_minibasket_modal_footer', 'file' => 'views/frontend/blocks/widget_minibasket_modal_footer.tpl'],
+        ['template' => 'widget/minibasket/minibasket.tpl', 'block' => 'dd_layout_page_header_icon_menu_minibasket_functions', 'file' => 'views/frontend/blocks/dd_layout_page_header_icon_menu_minibasket_functions.tpl'],
+        ['template' => 'page/checkout/basket.tpl', 'block' => 'basket_btn_next_bottom', 'file' => 'views/frontend/blocks/basket_btn_next_bottom.tpl'],
+        ['template' => 'layout/base.tpl', 'block' => 'base_js', 'file' => 'views/frontend/blocks/base_js.tpl'],
         [
             'template' => 'module_config.tpl',
             'block' => 'admin_module_config_form',
@@ -99,6 +113,8 @@ $aModule = [
         ],
     ],
     'settings' => [
+
+        ['group' => 'unzer_payment_main', 'name' => 'blUnzerPreCreateOrder', 'type' => 'bool', 'value' => false],
         [
             'group' => 'unzer_payment_main',
             'name' => 'UnzerPaymentMode',
@@ -124,6 +140,36 @@ $aModule = [
             'type' => 'select',
             'value' => 'ERROR',
             'constraints' => 'ERROR|WARNING|DEBUG'
+        ],
+        [
+            'group' => 'unzer_payment_specific',
+            'name' => 'UnzerPaymentApplepayExpressCheckout',
+            'type' => 'bool',
+            'value' => false
+        ],
+        [
+            'group' => 'unzer_payment_specific',
+            'name' => 'UnzerPaymentPaypalExpressCheckout',
+            'type' => 'bool',
+            'value' => false
+        ],
+        [
+            'group' => 'unzer_payment_specific',
+            'name' => 'UnzerPaymentGooglepayExpressCheckout',
+            'type' => 'bool',
+            'value' => false
+        ],
+        [
+            'group' => 'unzer_payment_specific',
+            'name' => 'UnzerPaymentGooglepayMerchantId',
+            'type' => 'str',
+            'value' => ''
+        ],
+        [
+            'group' => 'unzer_payment_specific',
+            'name' => 'UnzerPaymentGooglepayMerchantName',
+            'type' => 'str',
+            'value' => ''
         ],
         [
             'group' => 'unzer_payment_specific',
@@ -162,6 +208,24 @@ $aModule = [
             'constraints' => 'authorize|charge',
         ],
         */
+        [
+            'group' => 'unzer_payment_specific',
+            'name' => 'UnzerPaymentCOFCreditCard',
+            'type' => 'bool',
+            'value' => false
+        ],
+        [
+            'group' => 'unzer_payment_specific',
+            'name' => 'UnzerPaymentCOFPaypal',
+            'type' => 'bool',
+            'value' => false
+        ],
+        [
+            'group' => 'unzer_payment_specific',
+            'name' => 'UnzerPaymentCOFDirectDebit',
+            'type' => 'bool',
+            'value' => false
+        ],
         [
             'group' => 'unzer_payment_specific',
             'name' => 'UnzerPaymentClickToPay',

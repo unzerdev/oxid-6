@@ -3,6 +3,15 @@
 $sLangName = 'English';
 
 $aLang = [
+    'SHOP_MODULE_UnzerPaymentCOFCreditCard' => 'Show "Save Credit Card for next order" on checkout',
+    'SHOP_MODULE_UnzerPaymentCOFPaypal' => 'Show "Save Paypal Account" on checkout',
+    'SHOP_MODULE_UnzerPaymentCOFDirectDebit' => 'Show "Save Direct Debit Mandate" on checkout',
+    'SHOP_MODULE_blUnzerPreCreateOrder' => 'Create order before Unzer payment (webhook completion)',
+    'SHOP_MODULE_UnzerPaymentApplepayExpressCheckout' => 'Activate Apple Pay Express Checkout',
+    'SHOP_MODULE_UnzerPaymentGooglepayExpressCheckout' => 'Activate Google Pay Express Checkout',
+    'SHOP_MODULE_UnzerPaymentPaypalExpressCheckout' => 'Activate Paypal Express Checkout',
+    'SHOP_MODULE_UnzerPaymentGooglepayMerchantId' => 'Google Pay Merchant Id',
+    'SHOP_MODULE_UnzerPaymentGooglepayMerchantName' => 'Google Pay Merchant Name',
     'charset' => 'UTF-8',
 
     'SHOP_MODULE_GROUP_unzer_payment_main' => 'Main Settings',

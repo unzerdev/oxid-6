@@ -3,6 +3,9 @@
 $sLangName = "Deutsch";
 
 $aLang = [
+    'UNZER_END_EXPRESS_CHECKOUT' => 'Express Checkout beenden und Zahlungsart ändern',
+    'CANCEL_EXPRESS_CO' => 'Express Checkout abbrechen',
+    'UNZER_GENERIC_ERROR' => 'Es ist ein Fehler aufgetreten.',
     'charset' => 'UTF-8',
 
     'UNZER_PAYMENT_METHODNAME_ALIPAY' => 'Alipay',

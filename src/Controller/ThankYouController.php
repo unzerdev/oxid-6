@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Unzer\UnzerPayment\Controller;
 
+use OxidEsales\Eshop\Application\Model\Order;
+use Unzer\UnzerPayment\Service\ExpressCheckoutService;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\EshopCommunity\Internal\Container\ContainerFactory;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Bridge\ModuleSettingBridgeInterface;
@@ -35,7 +37,40 @@ class ThankYouController extends ThankYouController_parent
         $session = Registry::getSession();
         $logger = $this->getServiceFromContainer(DebugHandler::class);
 
-        if ($session->getVariable('UnzerMetadataId')) {
+        $preparedOrder = $this->getOrder();
+        if ($preparedOrder && (new \Unzer\UnzerPayment\Service\PreOrderService())->find('oxid', (string) $preparedOrder->getId())) {
+            foreach (['UnzerPaypageId', 'UnzerMetadataId', 'UnzerPreparedOrderId'] as $key) {
+                $session->deleteVariable($key);
+            }
+            return;
+        }
+        $order = $this->getOrder();
+        if ($session->getVariable(ExpressCheckoutService::SESSION_SELECTED_EXPRESS_METHOD)) {
+            $paymentId = $session->getVariable(ExpressCheckoutService::SESSION_PAYMENT_ID);
+            try {
+                if ($order && $paymentId && $order->getFieldData('oxtransid') === $paymentId) {
+                    $client = UnzerpaymentClient::getInstance();
+                    $payment = $client->fetchPayment($paymentId);
+                    $status = (new \Unzer\UnzerPayment\Service\PaymentService())->confirmedStatus($payment, $order);
+                    if ($status) {
+                        UnzerpaymentHelper::getInstance()->setOrderStatus($order->getId(), $status);
+                        if ($status === 'OK') {
+                            UnzerpaymentHelper::getInstance()->setOrderPaid($order->getId());
+                        }
+                        $order->setUnzerOrderNr($order->getId());
+                    }
+                    $metadata = $payment->getMetadata();
+                    if ($metadata) {
+                        $metadata->addMetadata('shopOrderReference', (string) $order->getFieldData('oxordernr'));
+                        $client->getResourceService()->updateResource($metadata);
+                    }
+                }
+            } catch (\Throwable $e) {
+                $logger->addLog('Express payment details unavailable', 2, $e, []);
+            } finally {
+                self::resetExpressCheckoutSessionData();
+            }
+        } elseif ($session->getVariable('UnzerMetadataId')) {
             $order = $this->getOrder();
             if (UnzerpaymentHelper::getInstance()->isUnzerPaymentMethod($order->oxorder__oxpaymenttype->value)) {
                 $UnzerMetadataId = $session->getVariable('UnzerMetadataId');
@@ -74,7 +109,9 @@ class ThankYouController extends ThankYouController_parent
                 }
                 $unzerPaymentId = (\UnzerSDK\Services\IdService::getResourceTypeFromIdString($paymentUnzerObject->getPaymentType()->getId()));
 
-                if ($unzerPaymentId == 'obp' && $payment->getTransactionStatus() == \UnzerSDK\Constants\TransactionStatus::STATUS_SUCCESS && isset($paymentUnzerObject->getCharges()[0])) {
+                if ($unzerPaymentId === 'ppy') {
+                    \Unzer\UnzerPayment\Service\PrepaymentStatus::updateExistingOrder($paymentUnzerObject, $order);
+                } elseif ($unzerPaymentId == 'obp' && $payment->getTransactionStatus() == \UnzerSDK\Constants\TransactionStatus::STATUS_SUCCESS && isset($paymentUnzerObject->getCharges()[0])) {
                     if ($paymentUnzerObject->getCharges()[0]->isSuccess()) {
                         UnzerpaymentHelper::getInstance()->setOrderStatus(
                             $order->getId(),
@@ -151,4 +188,16 @@ class ThankYouController extends ThankYouController_parent
         return parent::render();
     }
 
+
+    public static function resetExpressCheckoutSessionData() {
+        $session = Registry::getSession();
+        $session->deleteVariable(ExpressCheckoutService::SESSION_SELECTED_EXPRESS_METHOD);
+        $session->deleteVariable(ExpressCheckoutService::SESSION_CHECKOUT_USER_ID);
+        $session->deleteVariable(ExpressCheckoutService::SESSION_GOOGLE_PAYMENT_TYPE_ID);
+        $session->deleteVariable(ExpressCheckoutService::SESSION_APPLEPAY_PAYMENT_TYPE_ID);
+        $session->deleteVariable(ExpressCheckoutService::SESSION_PAYPAL_PAYMENT_ID);
+        $session->deleteVariable(ExpressCheckoutService::SESSION_PAYPAL_RETURN_STATE);
+        $session->deleteVariable(ExpressCheckoutService::SESSION_PAYPAL_PAYMENT_TYPE_ID);
+        $session->deleteVariable(ExpressCheckoutService::SESSION_PAYMENT_ID);
+    }
 }
